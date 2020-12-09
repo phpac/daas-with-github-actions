@@ -12,6 +12,7 @@ A low code platform run with github actions， powered by daas and Knowlege Spec
 This is a full stack app running on Github Actions, includes
 
 * MySQL
+
 * Redis
 * App Server(Caucho Resin)
 * React Frontend
