@@ -1,14 +1,870 @@
-<root org="doublechain"
-    chinese_name="Simple PIM v1.0"
-    english_name="Product Information Management"
->
-    <platform
-        name="PIM"
-        founded="now()"
-        contact_number="992887654321"
-    />
-    <brand name="Candys|Sees"  platform="platform()"/>
-    <product name="popcorn|chocklate" image="snack.jpg" brand="brand()"  platform="platform()"/>
-    <sku name="sku" product="product()" brand="brand()" platform="platform()" create_time="createTime()"/>
+<root
+    org="baotongchacang"
+    chinese_name="抱同茶仓"
+    english_name="xuntu mall"
+    cfg_analyze_all_lists_token="false"
+    cfg_mask_china_mobile="false"
+    cfg_language="Chinese"
+    cfg_payment_service="none"
+    cfg_unique_constraints_for_identified_by="true"
+    cfg_ui_form="false"
+    cfg_import_zone="chinese_level_3">
+
+  <!-- 基础平台 -->
+  <platform
+      _name="平台"
+      name="新途气体交易平台"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      _features_delta="laboratory_function"
+      />
+
+  <!-- 省 -->
+  <province
+      _name="省/直辖市/自治区"
+      name="名称:四川|北京|[1,120]"
+      platform="$(platform)"
+      _features="setting"
+      />
+
+  <!-- 市 -->
+  <city
+      _name="城市"
+      name="名称:成都|北京|[1,120]"
+      province="$(province)"
+      platform="$(platform)"
+      _features="setting"
+      />
+
+  <!-- 区 -->
+  <district
+      _name="区"
+      name="名称:成华区|朝阳区|锦江区|海淀区|[1,120]"
+      city="$(city)"
+      platform="$(platform)"
+      _features="setting"
+      />
+
+  <!-- 主动对象定义, 基础对象等 -->
+  <!-- 用户在商家中的角色 -->
+  <role
+      name="管理员|员工|[1,40]"
+      code="ADMIN|EMPLOYEE|[1,40]"
+      description="管理人员|员工|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 个人用户作为员工在商家里的状态 -->
+  <employee_status
+      name="被邀请|正常|已删除|待审核|[1,40]"
+      code="INVITED|NORMAL|REMOVED|TO_BE_APPROVE|[1,40]"
+      description="被邀请|正常|已删除|待审核|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 邀请其它人使用，基于邀请目的的分类 -->
+  <invitation_type
+      name="邀请同事|邀请商家|邀请用户|代下订单|分享|[1,40]"
+      code="COLLEAGUE|SUPPLIER|CUSTOMER|CSRORDER|COMMON|[1,40]"
+      description="邀请同事|邀请商家|邀请用户|代下订单|分享|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 下班时间 -->
+  <off_time
+      name="时间:14:00|15:00|16:00|17:00|18:00|19:00|20:00|21:00|[1,40]"
+      code="代码:H14_00|H15_00|H16_00|H17_00|H18_00|H19_00|H20_00|H21_00|[1,40]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <merchant_type
+      name="时间:PERSONAL|ORGANIZATION|[1,40]"
+      code="代码:PERSONAL|ORGANIZATION|[1,40]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 商家：卖家/买家/公司 -->
+  <merchant
+      name="名称:肯德基成都采购中心|张晓丹|妃妤婔婒|[1,100]"
+      off_time="下班时间:$(off_time)"
+      delivery_limit="单次配送最大数量:10000|[0,10000]"
+      merchant_type="merchant_type()"
+      platform="$(platform)"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- 个人用户信息 -->
+  <personal_user
+      _name="用户"
+      name="姓名:张喜来|黄波|王煜东|袁明星|周廷志|刘洋?|[0,40]"
+      nick_name="姓名:张喜来|黄波|王煜东|袁明星|周廷志|刘洋?|[0,40]"
+      mobile="手机号:13308188512?"
+      avatar="头像:avatar.jpg"
+      platform="$(platform)"
+      _features="merchant"
+      />
+
+  <!-- 个人用户的个人认证信息 -->
+  <individual_identity
+      name="姓名:张喜来|黄波|王煜东|袁明星|周廷志|刘洋?|[0,40]"
+      identity_mobile="13888888888"
+      contact_name="张三|[1,20]"
+      mobile="13888888888"
+      address="天府三街|[0,200]"
+      comment="text()"
+      merchant="$(merchant)"
+      platform="$(platform)"
+      _features="log"
+      />
+
+  <!-- 登录用户历史的工作上下文 -->
+  <user_working_info
+      user="personal_user()"
+      employee="employee()"
+      job_role="买家|卖家"
+      />
+
+  <!-- 商家的作为一个组织的认证信息 -->
+  <organization_identity
+      _name="公司认证"
+      name="名称:双链科技|[1,100]"
+      agency_social_code="91510100MA6C66P74M?|[18,18]"
+      contact_name="张三|[1,20]"
+      mobile="13888888888"
+      address="天府三街|[0,200]"
+      logo="1.jpg?"
+      comment="text()"
+      merchant="$(merchant)"
+      platform="$(platform)"
+      />
+
+  <!-- 商家的门店/仓库 -->
+  <warehouse
+      _name="仓库"
+      name="仓库名称:天府三街|[1,100]"
+      contact_name="张三|[0,20]"
+      mobile="13888888888"
+      address="天府三街|[0,200]"
+      merchant="$(merchant)"
+      />
+
+  <!-- 当某个人/商家通过其它人的分享/邀请进入时，有可能增加此记录，并根据类型（邀请目的）作业务处理 -->
+  <invitation_record
+      inviter="employee()"
+      invitee="employee()?"
+      mobile="13888888888?"
+      order_id="MO000001?"
+      type="invitation_type()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- 商家的员工信息 -->
+  <employee
+      _name="员工"
+      person_information="personal_user()"
+      merchant="merchant()"
+      role="role()"
+      status="employee_status()"
+      comment="司机|[0,200]"
+      platform="$(platform)"
+      />
+
+  <!-- 我的供应商/我的客户 -->
+  <supply_relationship
+      supplier="merchant()"
+      customer="merchant()"
+      supplier_comment="客户1|[0,100]"
+      customer_comment="供应商1|[0,100]"
+      />
+
+  <!-- 业务主体: 气体产品 -->
+  <!-- 产品包装容器，散瓶，3*3散瓶格，3*4散瓶格，3*5散瓶格，4*4散瓶格，集3*3装格，3*4集装格，3*5集装格，4*4集装格等 -->
+  <!-- quantity 每个容器包含散瓶数量，用于计算气瓶数量 -->
+  <gas_container
+      name="3*3散瓶格|[1,100]"
+      unit="集格"
+      quantity="9"
+      platform="$(platform)"
+      />
+
+  <!-- 产品充装介质 -->
+  <fill_medium
+      name="氧|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 产品公称容积 -->
+  <nominal_volume
+      volume="50升|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 充装量 -->
+  <fill_volume
+      volume="50升|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 产品公称压力 -->
+  <nominal_pressure
+      pressure="20Mpa|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 产品气瓶类型 -->
+  <bottle_type
+      name="绝热气瓶|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 气体组分 -->
+  <gas_component
+      name="氧|[1,100]"
+      platform="$(platform)"
+      />
+
+  <!-- 产品类型，纯气/混合气 -->
+  <product_type
+      name="纯气|混合气|散装格|[1,40]"
+      code="PURE_GAS|GAS_MIXTURE|BULK_LATTICE|[1,40]"
+      description="纯气|混合气|散装格|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 用户气瓶盘点状态 -->
+  <check_status
+      name="待买家确认|买家已确认|[1,40]"
+      code="WAITING_BUYER_CONFIRM|BUYER_CONFIRMED|[1,40]"
+      description="待买家确认|买家已确认|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <action_type
+      name="空瓶盘库|空瓶入库|生产入库|配送发货|客户确认接收单|商家代确认接收单|订单返瓶|确认接收单|商家提交气瓶盘库|客户确认气瓶盘库|外采入库|接收单入库|[1,40]"
+      code="CYLINDER_SET|CYLINDER_IN|PRODUCE|SHIP|BUYER_CONFIRM_RECEIPT|SELLER_FORCE_CONFIRM_RECEIPT|ORDER_BACK_CYLINDER|BUYER_CONFIRMED|SELLER_SUBMIT_CYLINDER_SET|CUSTOMER_CONFIRM_CYLINDER_SET|PURCHASE_OUT_OF_SYSTEM|PURCHASE_IN_SYSTEM|[1,40]"
+      description="空瓶盘库|空瓶入库|生产入库|配送发货|客户确认接收单|商家代确认接收单|订单返瓶|确认接收单|商家提交气瓶盘库|客户确认气瓶盘库|外采入库|接收单入库|[0,200]"
+      platform="$(platform)"
+      _features="status">
+
+    <!-- 直接设置空瓶数 -->
+    <!-- 增加空瓶数 -->
+    <!-- 减少空瓶数, 增加实瓶数 -->
+    <!-- 增加空瓶数 -->
+    <!-- 增加（接收瓶数-返回瓶数，可能为负）买家欠瓶数 -->
+    <!-- 不影响，但作记录 -->
+    <!-- 直接设置欠瓶数 -->
+    <!-- 不用此系统采购，只会增加自己的实瓶，需要手动选产品 -->
+    <!-- 接收单买家入库，自动创建自已的产品 -->
+  </action_type>
+
+  <product_status
+      name="正常|已下架|[1,40]"
+      code="NORMAL|REMOVED|[1,40]"
+      description="正常|已下架|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 定单状态 -->
+  <order_status
+      name="处理中|待买家确认|买家确认超时|待审核|已提交|待自提|待配送|正在配送|已完成|已取消|[1,40]"
+      code="PROCESSING|WAITING_BUYER_CONFIRM|BUYER_CONFIRM_TIMEOUT|WAITING_SELLER_CONFIRM|SUBMITTED|WAITING_BUYER_PICK_UP|WAITING_SELLER_DELIVERY|SELLER_SHIPPING|COMPLETED|CANCELLED|[1,40]"
+      description="处理中|待买家确认|买家确认超时|待卖家审核|已提交|待自提|待配送|正在配送|已完成|已取消|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <deliver_type
+      name="配送|自提|[1,40]"
+      code="DELIVERY|PICKUP|[1,40]"
+      description="送货上门|自提|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <shipping_status
+      name="新建|待自提|待配送|正在配送|已签收|已完成|已取消|[1,40]"
+      code="CREATED|WAITING_BUYER_PICK_UP|WAITING_SELLER_DELIVERY|SELLER_SHIPPING|BUYER_RECEIVED|COMPLETED|CANCELLED|[1,40]"
+      description="新建|待自提|待配送|正在配送|已签收|已完成|已取消|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <deliver_task_status
+      name="待执行|配送中|待确认|已完成|[1,40]"
+      code="PENDING|SHIPPING|RETURNING|COMPLETED|[1,40]"
+      description="待执行|配送中|待仓库确认回瓶数量|已完成|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <delivery_receipt_status
+      name="待客户确认|超时未确认|代客户确认|客户已确认|[1,40]"
+      code="WAITING_BUYER_CONFIRM|BUYER_CONFIRM_TIMEOUT|SELLER_FORCE_CONFIRMED|BUYER_CONFIRMED|[1,40]"
+      description="待客户确认|超时未确认|代客户确认|客户已确认|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <cylinder_area
+      name="空瓶|实瓶|实瓶在途|回瓶在途|客户持瓶|[1,40]"
+      code="EMPTY|PRODUCT|DELIVERY|BACK|BUYER|[1,40]"
+      description="空瓶|实瓶|实瓶在途|回瓶在途|客户持瓶|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 气瓶（种类） -->
+  <gas_cylinder
+      _name="气瓶类别"
+      name="包装规格:氦50L-20Mpa-散瓶G5/8内螺纹左旋|[1,200]"
+      gas_container="gas_container()"
+      fill_medium="fill_medium()"
+      nominal_pressure="nominal_pressure()"
+      nominal_volume="nominal_volume()"
+      bottle_type="bottle_type()"
+      additional_information="xxx?|[0,400]"
+      platform="$(platform)"
+      />
+
+  <!-- 卖家气瓶信息 -->
+  <merchant_cylinder
+      cylinder="gas_cylinder()"
+      merchant="merchant()"
+      cylinder_area="cylinder_area()"
+      quantity="1|[-1000000,1000000]"
+      last_check_time="date_time()"
+      />
+
+  <!-- 增加卖家记录场景： 空瓶盘库/空瓶入库/生产入库/订单返瓶 -->
+  <merchant_cylinder_record
+      _name="气瓶记录"
+      merchant="merchant()"
+      cylinder="gas_cylinder()"
+      cylinder_area="cylinder_area()"
+      quantity="1|[-1000000,1000000]"
+      update_quantity="1|[-1000000,1000000]"
+      actor="employee()"
+      action="action_type()"
+      comment="text()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- 客户欠瓶 -->
+  <customer_cylinder
+      cylinder="gas_cylinder()"
+      seller="merchant()"
+      customer="merchant()"
+      quantity="1|[-1000000,1000000]"
+      delta="0|[-1000000,1000000]"
+      status="check_status()"
+      last_check_time="date_time()"
+      last_confirm_time="date_time()"
+      />
+
+  <!-- 增加客户气瓶记录场景: 接收单/盘库 -->
+  <customer_cylinder_record
+      _name="客户欠瓶记录"
+      cylinder="gas_cylinder()"
+      seller="merchant()"
+      customer="merchant()"
+      quantity="1|[-1000000,1000000]"
+      update_quantity="1|[-1000000,1000000]"
+      actor="employee()"
+      action="action_type()"
+      comment="text()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- 买家与卖家之间的欠瓶可能需要凭证 -->
+  <customer_cylinder_record_evidence
+      images="images()"
+      comment="text()"
+      record="customer_cylinder_record()"
+      actor="employee()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- （系统）产品模板 -->
+  <gas_product_template
+      _name="系统气体产品"
+      name="名称:食品添加剂氮气-20Mpa-50L-3*5集装格|[1,200]"
+      cylinder="gas_cylinder()"
+      fill_volume="fill_volume()"
+      product_type="product_type()"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      platform="$(platform)"
+      />
+
+  <gas_product_template_component
+      component="gas_component()"
+      percentage="0.1"
+      product_template="gas_product_template()"
+      />
+
+  <!-- 某公司/商家维护的产品 -->
+  <gas_product
+      name="名称:食品添加剂氮气-20Mpa-50L-3*5集装格"
+      cylinder="gas_cylinder()"
+      fill_volume="fill_volume()"
+      template="gas_product_template()?"
+      status="product_status()"
+      quantity="1|[-1000000,1000000]"
+      target_quantity="1|[0,1000000]"
+      threshold_quantity="1|[0,1000000]"
+      quantity_per_day="1|[0,1000000]"
+      product_type="product_type()"
+      legacy_code="产品代码:O2-9999|Ar-750?|[0, 60]"
+      merchant="merchant()"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      platform="$(platform)"
+      />
+
+  <gas_product_component
+      component="gas_component()"
+      percentage="0.1"
+      product="gas_product()"
+      />
+
+  <!-- 增加产品库存记录场景: 生产入库/外采入库(不走我们的系统，需要选产品)/盘库/（接收单买家入库，自动创建自已的产品） 记录 -->
+  <gas_product_inventory_record
+      merchant="merchant()"
+      product="gas_product()"
+      quantity="1|[-1000000,1000000]"
+      update_quantity="1|[-1000000,1000000]"
+      actor="employee()"
+      action="action_type()"
+      comment="text()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <gas_product_cache
+      product="$(gas_product)"
+      merchant="$(merchant)"
+      search_text="text()"
+      _features="log"
+      />
+
+  <gas_product_template_cache
+      template_id="$(gas_product_template)"
+      search_text="text()"
+      _features="log"
+      />
+
+  <deliver_task
+      _name="配送任务"
+      name="2012年12月12日张三任务"
+      deliver_staff="employee()"
+      merchant="merchant()"
+      status="deliver_task_status()"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      />
+
+  <main_order
+      buyer="merchant()?"
+      seller="merchant()"
+      status="order_status()"
+      handover_address="天府三街?|[1,200]"
+      seller_contact_name="张三?|[0,20]"
+      seller_contact_phone="1213a?|[0,20]"
+      buyer_contact_name="张三?|[1,20]"
+      buyer_contact_phone="1213a?|[1,20]"
+      handover_date="date_future()?"
+      handover_time="上午|下午|3点-5点?[0,20]"
+      shipping_type="deliver_type()?"
+      creator="employee()"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      />
+
+  <user_comments
+      main_order="main_order()"
+      comment="text()"
+      creator="employee()"
+      create_time="createTime()"
+      />
+
+  <gas_line_item
+      name="名称:食品添加剂氮气-20Mpa-50L-3*5集装格"
+      cylinder="gas_cylinder()"
+      product="gas_product()"
+      template="gas_product_template()?"
+      quantity="1|[-10000000,10000000]"
+      back_quantity="1|[0,10000000]"
+      components="90%氦+7%氩+3%二氧化碳"
+      main_order="main_order()"
+      />
+
+  <!-- 定单配送信息 -->
+  <gas_shipping_group
+      _name="运单"
+      gas_line_item="gas_line_item()"
+      main_order="main_order()"
+      quantity="1|[0,1000000]"
+      back_quantity="回瓶数:10000|[0,1000000]"
+      handover_address="天府三街|[1,200]"
+      seller_contact_name="张三?|[0,20]"
+      seller_contact_phone="1213a?|[0,20]"
+      buyer_contact_name="张三|[1,20]"
+      buyer_contact_phone="1213a|[1,20]"
+      handover_date="date_future()"
+      handover_time="上午|下午|3点-5点[0,20]"
+      shipping_type="deliver_type()"
+      shipping_status="shipping_status()"
+      deliver_task="deliver_task()?"
+      seller="merchant()"
+      buyer="merchant()"
+      creator="employee()"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      _features="log"
+      />
+
+  <delivery_receipt
+      _name="交接单"
+      gas_shipping_group="gas_shipping_group()"
+      gas_line_item="gas_line_item()"
+      main_order="main_order()"
+      quantity="1|[0,1000000]"
+      back_quantity="1|[0,1000000]"
+      comment="text()"
+      seller="merchant()"
+      buyer="merchant()"
+      creator="employee()"
+      confirmer="employee()"
+      status="delivery_receipt_status()"
+      create_time="createTime()"
+      confirm_time="date()"
+      />
+
+  <delivery_receipt_evidence
+      images="images()"
+      comment="text()"
+      record="delivery_receipt()"
+      actor="employee()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <order_action_type
+      name="商家代客下单|客户下单|客户确认订单|商家代客户确认订单|商家确认订单|商家订单发货|商家创建交接单|客户确认交接单|商家代客户确认交接单|商家确认完成|商家取消定单|买家取消定单|[1,40]"
+      code="SELLER_SUBMIT_ORDER|BUYER_SUBMIT_ORDER|BUYER_CONFIRM|SELLER_FORCE_CONFIRM|SELLER_CONFIRM|SELLER_DELIVERY|SELLER_CREATE_DELIVERY_RECEIPT|BUYER_CONFIRM_DELIVERY_RECEIPT|SELLER_FORCE_CONFIRM_DELIVERY_RECEIPT|SELLER_CONFIRM_DONE|SELLER_CANCEL|BUYER_CANCEL|[1,40]"
+      description="代客下单|客户下单|客户确认订单|商家代客户确认订单|商家确认订单|商家订单发货|商家创建交接单|客户确认交接单|商家代客户确认交接单|商家确认完成|商家取消定单|买家取消定单|[0,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <!-- 定单操作记录 -->
+  <order_operation_record
+      main_order="main_order()"
+      actor="employee()"
+      action="order_action_type()"
+      comment="代张三下单|代双链科技下单?|[0,100]"
+      detail="text()"
+      create_time="createTime()"
+      _features="log"
+      />
+
+  <!-- 杂项 -->
+  <icon_configuration
+      name="样例|[1,40]"
+      code="ICON_EXAMPLE|[1,40]"
+      description="图标数据样例|[1,200]"
+      icon="icon_font?|[0,100]"
+      image="icon.jpg?"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <system_level_configuration
+      _name="系统参数配置"
+      name="名称:反馈邮箱|联系电话|小程序名称|[1,20]"
+      code="代码:FEEDBACK_EMAIL|SERVICE_MOBILE|WXAPP_NAME|[1,20]"
+      value="参数值:opensw001@gmail.com|800-12345678|新途气体|[1,512]"
+      description="说明:反馈意见的联系邮箱|客服电话|小程序首页显示的名称|[1,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <system_level_images
+      _name="系统图片参数配置"
+      name="名称:默认用户头像|默认工厂图片|平台推广图片|我要卖气|我要买气|默认按钮图片|[1,20]"
+      code="代码:PERSONAL_AVATAR|FACTORY_LOGO|PLATFORM_BANNER|SELLER_BANNER|BUYER_BANNER|ACTION_ICON|[1,20]"
+      value="图片:example.jpg"
+      link_to_url="链接:https://www.baidu.com/some.mp4?|[0,512]"
+      description="说明:个人用户的默认头像|工厂的默认图像|平台推广图片|首页 我要卖气 的背景图片|首页 我要买气 的背景图片|默认按钮图片|[1,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <system_level_content
+      _name="系统内容配置"
+      name="名称:联系我们|[1,20]"
+      code="代码:CONTACT_US|[1,20]"
+      value="内容:richText()"
+      description="说明:'联系我们' 的页面内容|[1,200]"
+      platform="$(platform)"
+      _features="status"
+      />
+
+  <system_level_number
+      _name="数字类型的系统配置"
+      name="名称:例:审核超时(小时)|[1,20]"
+      code="代码:REVIEW_TIMEOUT|[1,20]"
+      value="值:0000000008.0000000|[-99999999.999999,99999999.999999]"
+      min_value="下限值:0000000000.0000000"
+      max_value="上限值:0000000168.0000000"
+      description="说明:审核任务的超时时间. 单位是小时. 默认8小时. 0表示不会超时|[1,200]"
+      platform="$(platform)"
+      _features="status"
+      _immutable_fields="code,min_value,max_value"
+      />
+
+  <system_announcement
+      _name="公告"
+      content="内容:2020年9月30日系统维护|二维码铭牌免费升级活动|[1,100]"
+      link_to_url="链接:https://www.jiezhichuangxiu/ad/12343545?"
+      start_time="生效时间:2199-12-31T23:59:59"
+      end_time="过期时间:2199-12-31T23:59:59"
+      mobile_app="$(mobile_app)"
+      />
+
+  <guide_type
+      _name="引导类型"
+      name="新卖家|卖家|新买家|买家"
+      code="NEW_SELLER|SELLER|NEW_BUYER|BUYER"
+      app="$(mobile_app)"
+      _features="status"
+      />
+
+  <guide_slide
+      _name="用户引导画面"
+      guide_type="$(guide_type)"
+      title="标题:注册成功|快速下单|模拟发货?|[1,20]"
+      image="展示图片:machine.jpg|bottle.jpg"
+      description="描述:richText()?"
+      link_url="跳转链接:http://www.think-to.com?"
+      display_order="展示顺序:1|2|3|4|5|[1,10000]"
+      app="$(mobile_app)"
+      />
+
+  <!-- 生成的部分 -->
+  <change_request_type
+      name="名称:转移管理员|信息反馈|商户注册|添加客户|产品附加规格|确认加入|完善信息并入库|修改附加规格|创建交接单|自定义|入库|编辑备注|更新个人信息|完善信息|确认|批准加入|完善信息|生产入库|完善配送|审核加入|修改产品|完善信息|备注|产品附加规格|更新信息|商户基础信息|修改配送信息|完善信息|修改附加规格|上架|提交客户审核|完善信息|同意代下|完成审核|自定义产品|配送信息|外采入库|复制产品|修改订单|完善信息|设置商户下班时间|提交新单|审批加入+姓名|设置单次配送最大量|自定义|产品附加规格|下架|完善信息|备注|代客确认|确认交接|完善信息|[1,100]"
+      code="代码:ADMIN_TRANSFER|MORE_SUPPLIER_PRODUCT|SELLER_REGISTER|SELLER_ADD_BUYER|EDIT_ADDITIONAL_SPEC_WHEN_INIT|CONFIRM_JOIN|UPDATE_MERCHANT_INFO_WHEN_INBOUND|EDIT_ADDITIONAL_SPEC_WHEN_CREATE_IN_QUOTE|CREATE_HANDOVER_TASK|CUSTOM_PRODUCT_WHEN_QUOTE_BY_PRODUCT|PRODUCT_INBOUND|UPDATE_SUPPLIER|UPDATE_PERSONAL_INFO|UPDATE_MERCHANT_INFO_FROM_SELLER_HOME|BUYER_BIC_CONFIRM|APPROVE_JOIN_BUYER|UPDATE_BUYER_INFO_WHEN_CONFIRM_QUOTE|INBOUND_FROM_HOME|BUYER_UPDATE_DELIVERY_INFO|BUYER|UPDATE_PRODUCT_INFO|UPDATE_MERCHANT_INFO_WHEN_QUOTE|UPDATE_COLLEAGUE_INFO|EDIT_ADDITIONAL_SPEC_WHEN_QUOTE|BUYER_UPDATE_MERCHANT_INFO|UPDATE_COMPANY_INFO|UPDATE_DELIVERY_INFO|UPDATE_MERCHANT_INFO_WHEN_VIEW_BUYER|EDIT_ADDITIONAL_SPEC_WHEN_CREATE|PRODUCT_ON_SHELF|SEND_TO_CUSTOMER_AUDIT|BUYER_UPDATE_INFO_IN_HOME|CONFIRM_QUOTE|AUDIT_ORDER|CUSTOM_PRODUCT_WHEN_INITIAL|BUYER_DELIVERY_INFO|BUY_INBOUND_FROM_HOME|COPY_PRODUCT|BUYER_UPDATE_ORDER|SELLER_UPDATE_MERCHANT_INFO|UPDATE_MERCHANT_OFF_TIME|CREATE_SPLIT_ORDER|AUDIT_JOIN_APPLY|UPDATE_MERCHANT_DELIVERY_LIMIT|CUSTOM_PRODUCT_WHEN_QUOTE|EDIT_ADDITIONAL_SPEC_WHEN_REVIEW_INIT|PRODUCT_OFF_SHELF|UPDATE_MERCHANT_INFO_WHEN_INVITE|EDIT_BUYER_COLLEAGUE|CONFIRM_AS_CUSTOMER|CONFIRM_DELIVERY_TASK|UPDATE_BUYER_INFO_WHEN_ORDER|[1,100]"
+      icon="图标:bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|bars|[1,100]"
+      display_order="显示顺序:1|2|3|4|5|6"
+      bind_types="text()"
+      step_configuration="text()"
+      platform="$(platform)"
+      _features="cr_type"
+      _identified_by="code"
+      />
+
+  <change_request
+      name="名称:注册|开始考试|答题|[1,50]"
+      create_time="创建时间:createTime()"
+      remote_ip="remoteIp()"
+      city_by_ip="访问地址:四川省成都市|新疆维吾尔自治区阿卡大礼县?"
+      request_type="类型:$(change_request_type)"
+      commited="已提交:false"
+      platform="$(platform)"
+      _features="change_request"
+      />
+
+  <event_tbd
+      _name="待定义事件"
+      tbd="字段待定义:tbd|字段待定义|[1,4]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="MORE_SUPPLIER_PRODUCT|CONFIRM_JOIN|CREATE_HANDOVER_TASK|CUSTOM_PRODUCT_WHEN_QUOTE_BY_PRODUCT|UPDATE_PERSONAL_INFO|BUYER_BIC_CONFIRM|UPDATE_BUYER_INFO_WHEN_CONFIRM_QUOTE|BUYER_UPDATE_DELIVERY_INFO|BUYER|UPDATE_PRODUCT_INFO|UPDATE_MERCHANT_INFO_WHEN_QUOTE|UPDATE_COMPANY_INFO|UPDATE_DELIVERY_INFO|UPDATE_MERCHANT_INFO_WHEN_VIEW_BUYER|PRODUCT_ON_SHELF|SEND_TO_CUSTOMER_AUDIT|CONFIRM_QUOTE|AUDIT_ORDER|BUYER_DELIVERY_INFO|COPY_PRODUCT|BUYER_UPDATE_ORDER|CREATE_SPLIT_ORDER|CUSTOM_PRODUCT_WHEN_QUOTE|PRODUCT_OFF_SHELF|EDIT_BUYER_COLLEAGUE|CONFIRM_AS_CUSTOMER|CONFIRM_DELIVERY_TASK|UPDATE_BUYER_INFO_WHEN_ORDER"
+      />
+
+  <event_organization_info
+      _name="商户注册事件"
+      organization_id="组织ID:organization id|组织ID?"
+      employee_id="提交人:employee id|提交人?"
+      name="单位名称:name|单位名称|[1,40]"
+      agency_social_code="信用代码:agency social code|信用代码?|[18,18]"
+      contact_name="联系人:contact name|联系人|[1,20]"
+      contact_mobile="联系电话:13300001234"
+      address="单位地址:address|单位地址|[1,100]"
+      logo="单位logo:logo.jpg"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="SELLER_REGISTER|UPDATE_MERCHANT_INFO_WHEN_INBOUND|UPDATE_MERCHANT_INFO_FROM_SELLER_HOME|BUYER_UPDATE_MERCHANT_INFO|BUYER_UPDATE_INFO_IN_HOME|SELLER_UPDATE_MERCHANT_INFO|UPDATE_MERCHANT_INFO_WHEN_INVITE"
+      />
+
+  <event_admin_transfer
+      _name="管理员变更事件"
+      merchant_id="组织ID:merchant id|组织ID|[1,30]"
+      new_admin="新管理员:$(personal_user)"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="ADMIN_TRANSFER"
+      />
+
+  <event_update_supplier
+      _name="编辑备注事件"
+      merchant="用户:merchant|用户|[1,30]"
+      supplier="供应商ID:supplier|供应商ID|[1,30]"
+      comment="备注:comment|备注?|[0,40]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="UPDATE_SUPPLIER"
+      />
+
+  <event_update_merchant_off_time
+      _name="设置商户下班时间事件"
+      merchant_id="组织ID:merchant id|组织ID|[1,30]"
+      off_time="下班时间:$(off_time)"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="UPDATE_MERCHANT_OFF_TIME"
+      />
+
+  <event_update_merchant_delivery_limit
+      _name="设置单次配送最大量事件"
+      merchant_id="组织ID:merchant id|组织ID|[1,30]"
+      delivery_limit="最大值:delivery limit|最大值|[1,30]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="UPDATE_MERCHANT_DELIVERY_LIMIT"
+      />
+
+  <event_employee_approve
+      _name="批准加入事件"
+      employee_id="被批准的岗位:employee id|被批准的岗位|[1,30]"
+      name="姓名:name|姓名?|[1,40]"
+      mobile="手机号:13300001234?"
+      employee_comment="员工备注:employee comment|员工备注?"
+      approve_comment="说明:text()?"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="APPROVE_JOIN_BUYER|UPDATE_COLLEAGUE_INFO|AUDIT_JOIN_APPLY"
+      />
+
+  <event_seller_add_buyer
+      _name="添加客户事件"
+      employee_id="邀请人:employee id|邀请人|[1,30]"
+      buyer_type="buyer type|null|[1,30]"
+      name="用气用户名称:name|用气用户名称|[1,100]"
+      agency_social_code="信用代码:agency social code|信用代码?|[18,18]"
+      mobile="用户手机号:13300001234?"
+      comment="备注:text()|[0,100]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="SELLER_ADD_BUYER"
+      />
+
+  <event_update_additional_spec
+      _name="产品附加规格事件"
+      scene="使用场景:scene|使用场景|[1,20]"
+      template_id="产品模板:template id|产品模板?"
+      product_id="产品:product id|产品?|[0,48]"
+      merchant_id="商户:merchant id|商户|[1,30]"
+      additional_spec="附加规格:additional spec|附加规格?|[0,100]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="EDIT_ADDITIONAL_SPEC_WHEN_INIT|EDIT_ADDITIONAL_SPEC_WHEN_CREATE_IN_QUOTE|EDIT_ADDITIONAL_SPEC_WHEN_QUOTE|EDIT_ADDITIONAL_SPEC_WHEN_CREATE|EDIT_ADDITIONAL_SPEC_WHEN_REVIEW_INIT"
+      />
+
+  <event_product_inbound
+      _name="产品入库事件"
+      merchant_id="商户:merchant id|商户|[1,30]"
+      product="产品:$(gas_product)"
+      inbound_type="入库类型:text()"
+      number="数量:12345678|[1,10000]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="PRODUCT_INBOUND|INBOUND_FROM_HOME|BUY_INBOUND_FROM_HOME"
+      />
+
+  <event_product_base_info
+      _name="产品基础信息事件"
+      merchant_id="卖家ID:merchant id|卖家ID|[1,30]"
+      product_type="产品类别:$(product_type)"
+      product_alias_name="产品别名:product alias name|产品别名?|[0,40]"
+      product_legacy_id="产品代码:product legacy id|产品代码?|[0,100]"
+      product_picture="产品图片:productPicture.jpg?"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="CUSTOM_PRODUCT_WHEN_INITIAL"
+      />
+
+  <event_container_info
+      _name="产品包装物信息事件"
+      fill_medium="充装介质:$(fill_medium)?"
+      gas_container="包装类别:$(gas_container)"
+      nominal_volume="公称容积(L):12345678.000|[0,1000]"
+      nominal_pressure="公称压力(Mpa):12345678.000|[0,1000]"
+      fill_volume="充装量:$(fill_volume)"
+      bottle_type="气瓶类别:$(bottle_type)"
+      additional_info="附件规格:additional info|附件规格?|[0,100]"
+      change_request="$(change_request)"
+      _features="event"
+      _bind_with_cr_type="CUSTOM_PRODUCT_WHEN_INITIAL"
+      />
+
+  <event_product_component
+      _name="充装介质信息事件"
+      component="组分:$(fill_medium)"
+      rate="组分含量(%):12345678.000|[1,100]"
+      change_request="$(change_request)"
+      _features="n*event"
+      _bind_with_cr_type="CUSTOM_PRODUCT_WHEN_INITIAL"
+      />
+
+  <!-- 按照 ChangeRequest 来保存数据, 此表内部使用.
+   events_info内部是个map,等价于
+    event_type="EventInvitor|EventAnother|[1,64]"
+    event_id="EI000001|EA0000001|[1,64]"
+    field_group="cr_type/step_name/event_name/event_index|[1,100]"
+
+   status 有3个:
+    OPENING: 还在填写中. 包括 撤销 也算在这个状态.
+    COMMITTED: 已经提交,并且以后要重新填写;
+    PRESET: 已经提交,并且以后用这里的值做预填充值.
+   -->
+  <event_info_in_cr
+      change_request="CR-ID:$(change_request)"
+      change_request_type="CR类型:$(change_request_type)"
+      status="OPENING|COMMITTED|PRESET"
+      initiator_type="发起者类型:SecUser|Merchant|[1,64]"
+      initiator_id="发起者ID:SU000001|M0000001|[1,64]"
+      events_info="事件详情:text()"
+      last_update_time="updateTime()"
+      _max_count="1000000000"
+      />
+
+  <system_processing_instance
+      title="标题:提现流程|拍卖流程|[1,100]"
+      type="类型:WITHDRAW|BIDDING|[1,64]"
+      target_identity="目标ID:DemandProposal_DP000001|ArtworkAuction_AA000001|[1,100]"
+      brief="摘要:红星造纸厂提现|《远秋近春》拍卖|[0,200]"
+      detail="数据:text()"
+      platform="$(platform)"
+      create_time="createTime()"
+      last_update_time="updateTime()"
+      _identified_by="target_identity"
+      _features="log,settings,no_sample_data"
+      />
+
 </root>
- 
+
